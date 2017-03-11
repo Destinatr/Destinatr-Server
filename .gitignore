@@ -32,6 +32,7 @@ jspm_packages
 build
 .tscache
 .vscode/launch.json
+ecosystem.config.js
 
 # Optional npm cache directory
 .npm
