@@ -30,6 +30,26 @@ module Conrtoller {
             this.parkingRepository = new ParkingRepository();
         }
 
+        public parkingsCount(parkingRequest: ParkingRequest): Promise<number>{
+             return new Promise<number>((resolve, reject) => {
+                this.parkingRepository.count({
+                    position: {
+                        $nearSphere: {
+                            $geometry: {
+                                type: "Point",
+                                coordinates: [Number(parkingRequest.longitude), Number(parkingRequest.latitude)]
+                            },
+                            $maxDistance: parkingRequest.distanceRadius
+                        }
+                    }
+                }).then((count: number) => {
+                    resolve(count);
+                }).catch((err) => {
+                    reject(err);
+                });
+            });
+        }
+
         public getNearestParkings(parkingRequest: ParkingRequest): Promise<ParkingModel[]> {
             return new Promise<ParkingModel[]>((resolve, reject) => {
                 this.parkingRepository.findAndPopulate({
@@ -42,7 +62,7 @@ module Conrtoller {
                             $maxDistance: parkingRequest.distanceRadius
                         }
                     }
-                }, null, null, Number(parkingRequest.pageNumber * parkingRequest.pageSize),
+                }, null, Number(parkingRequest.pageNumber * parkingRequest.pageSize),
                 Number(parkingRequest.pageSize)).then((parkings: ParkingModel[]) => {
                     resolve(parkings);
                 }).catch((err) => {
