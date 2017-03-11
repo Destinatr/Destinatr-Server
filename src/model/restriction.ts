@@ -9,11 +9,11 @@ export let Mixed = mongoose.Schema.Types.Mixed;
 
 export interface RestrictionModel extends mongoose.Document {
     code: string;
-    journee: string;
-    moisDebut: string;
-    moisFin: string;
-    heureDebut: string;
-    heureFin: string;
+    journee: string[];
+    moisDebut?: string[];
+    moisFin?: string[];
+    heureDebut?: string[];
+    heureFin?: string[];
 }
 
 let schema = new Schema({
@@ -22,24 +22,24 @@ let schema = new Schema({
                 required: true
             },
             journee: {
-                type: String,
-                required: true
+                type: [String],
+                required: false
             },
             moisDebut: {
-                type: String,
-                required: true
+                type: [String],
+                required: false
             },
             moisFin: {
-                type: String,
-                required: true
+                type: [String],
+                required: false
             },
             heureDebut: {
-                type: String,
-                required: true
+                type: [String],
+                required: false
             },
             heureFin: {
-                type: String,
-                required: true
+                type: [String],
+                required: false
             }
 });
 
