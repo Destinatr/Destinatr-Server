@@ -1,8 +1,4 @@
 
-
-
-
-
 import * as mongoose from 'mongoose';
 import { RepositoryBase } from "./database";
 

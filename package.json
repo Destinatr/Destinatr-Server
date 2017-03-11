@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Express project seed in Typescript",
   "scripts": {
-    "start": "grunt && node src/www.js",
+    "start": "grunt && node build/www.js",
     "lint": "grunt tslint"
   },
   "dependencies": {
