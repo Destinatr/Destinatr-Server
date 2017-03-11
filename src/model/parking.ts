@@ -44,7 +44,8 @@ export class ParkingRepository extends RepositoryBase<ParkingModel> {
         super(parkingSchema);
     }
 
-    public findAndPopulate(cond?: Object, options?: Object, sort?: Object): Promise<ParkingModel[]> {
+    // tslint:disable-next-line:max-line-length
+    public findAndPopulate(cond?: Object, options?: Object, sort?: Object, skip?: number, limit?: number): Promise<ParkingModel[]> {
         return new Promise<ParkingModel[]>((resolve, reject) => {
             this._model.find(cond, options, (err: any, res: ParkingModel[]) => {
                 if (err) {
@@ -52,7 +53,7 @@ export class ParkingRepository extends RepositoryBase<ParkingModel> {
                 } else {
                     resolve(res);
                 }
-            }).sort(sort).populate('restriction');
+            }).sort(sort).skip(skip).limit(limit).populate('restriction');
         });
     }
 

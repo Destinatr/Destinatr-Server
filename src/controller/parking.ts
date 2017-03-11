@@ -4,6 +4,8 @@ import { RestrictionModel, RestrictionRepository } from "../model/restriction";
 module Conrtoller {
 
     interface ParkingRequest {
+        pageNumber: number;
+        pageSize: number;
         latitude: number;
         longitude: number;
         distanceRadius: number;
@@ -40,7 +42,8 @@ module Conrtoller {
                             $maxDistance: parkingRequest.distanceRadius
                         }
                     }
-                }, null, null).then((parkings: ParkingModel[]) => {
+                }, null, null, Number(parkingRequest.pageNumber * parkingRequest.pageSize),
+                Number(parkingRequest.pageSize)).then((parkings: ParkingModel[]) => {
                     resolve(parkings);
                 }).catch((err) => {
                     reject(err);
