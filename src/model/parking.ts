@@ -10,10 +10,10 @@ export interface Position {
     coordinates: number[];
 }
 
-
 export interface ParkingModel extends mongoose.Document {
     position: Position;
     restriction?: RestrictionModel;
+    rating: number;
 }
 
 let schema = new Schema({
@@ -31,6 +31,10 @@ let schema = new Schema({
         type: Schema.Types.ObjectId,
         required: false,
         ref: 'restriction'
+    },
+    rating: {
+        type: Number,
+        default: 0
     }
 });
 

@@ -22,25 +22,29 @@ let schema = new Schema({
                 type: String,
                 required: true
             },
+            toujours: {
+                type: Boolean,
+                required: false
+            },
             journee: {
-                type: String,
-                required: true
+                type: [String],
+                required: false
             },
             moisDebut: {
-                type: String,
-                required: true
+                type: [String],
+                required: false
             },
             moisFin: {
-                type: String,
-                required: true
+                type: [String],
+                required: false
             },
             heureDebut: {
-                type: String,
-                required: true
+                type: [String],
+                required: false
             },
             heureFin: {
-                type: String,
-                required: true
+                type: [String],
+                required: false
             }
 });
 
