@@ -9,6 +9,7 @@ import * as bodyParser from 'body-parser';
 import * as database from "./model/database";
 
 import { Index } from './route/index';
+import { ParkingRoute } from './route/parking';
 
 export class Application {
 
@@ -26,6 +27,7 @@ export class Application {
         this.config();
 
         this.routes();
+
     }
 
     private config() {
@@ -44,7 +46,10 @@ export class Application {
     public routes() {
 
         let index: Index = new Index();
+        let parking: ParkingRoute = new ParkingRoute();
+
         this.app.use("/", index.router);
+        this.app.use("/parking", parking.router);
 
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
             let err = new Error('Not Found');

@@ -45,24 +45,21 @@ export class ParkingRepository extends RepositoryBase<ParkingModel> {
         super(parkingSchema);
     }
 
-    public findWithLimit(cond?: Object, options?: Object, sort?: Object, skip?: number,
-                         limit?: number): Promise<ParkingModel[]> {
+    public findAndPopulate(cond?: Object, options?: Object, sort?: Object): Promise<ParkingModel[]> {
         return new Promise<ParkingModel[]>((resolve, reject) => {
             this._model.find(cond, options, (err: any, res: ParkingModel[]) => {
-
                 if (err) {
                     reject(err);
                 } else {
                     resolve(res);
                 }
-            }).sort(sort).skip(skip).limit(limit).populate('restriction');
+            }).sort(sort).populate('restriction');
         });
     }
 
     public findByIdAndPopulate(_id) {
         return new Promise<ParkingModel>((resolve, reject) => {
             this._model.findById({ _id: _id }, (err: any, res: ParkingModel) => {
-
                 if (err) {
                     reject(err);
                 } else {
