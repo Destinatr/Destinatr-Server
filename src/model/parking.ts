@@ -11,15 +11,6 @@ export interface Position {
 }
 
 
-export interface Restriction {
-    code: string;
-    journee: string;
-    moisDebut: string;
-    moisFin: string;
-    heureDebut: string;
-    heureFin: string;
-}
-
 export interface ParkingModel extends mongoose.Document {
     position: Position;
     restriction?: RestrictionModel;

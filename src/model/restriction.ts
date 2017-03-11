@@ -9,11 +9,12 @@ export let Mixed = mongoose.Schema.Types.Mixed;
 
 export interface RestrictionModel extends mongoose.Document {
     code: string;
-    journee: string;
-    moisDebut: string;
-    moisFin: string;
-    heureDebut: string;
-    heureFin: string;
+    toujours?: boolean;
+    journee: string[];
+    moisDebut: string[];
+    moisFin: string[];
+    heureDebut: string[];
+    heureFin: string[];
 }
 
 let schema = new Schema({
