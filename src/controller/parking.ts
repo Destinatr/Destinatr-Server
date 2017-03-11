@@ -1,10 +1,12 @@
 import { ParkingModel, ParkingRepository, Position } from "../model/parking";
+import { RestrictionModel, RestrictionRepository } from "../model/restriction";
 
 module Conrtoller {
 
     interface ParkingRequest {
         latitude: number;
         longitude: number;
+        distanceRadius: number;
     }
 
     export class ParkingController {
@@ -12,7 +14,7 @@ module Conrtoller {
         private static instance: ParkingController;
 
         private parkingRepository: ParkingRepository;
-        private maxDistance = 500;
+        private restrictionRepository: RestrictionRepository;
 
         public static getInstance() {
             if (!ParkingController.instance) {
@@ -22,6 +24,7 @@ module Conrtoller {
         }
 
         private constructor() {
+            this.restrictionRepository = new RestrictionRepository();
             this.parkingRepository = new ParkingRepository();
         }
 
@@ -34,7 +37,7 @@ module Conrtoller {
                                 type: "Point",
                                 coordinates: [Number(parkingRequest.longitude), Number(parkingRequest.latitude)]
                             },
-                            $maxDistance: this.maxDistance
+                            $maxDistance: parkingRequest.distanceRadius
                         }
                     }
                 }, null, null).then((parkings: ParkingModel[]) => {

@@ -24,8 +24,7 @@ let schema = new Schema({
         },
         coordinates: {
             type: [Number]
-        },
-        required: true
+        }
     },
     restriction: {
         type: Schema.Types.ObjectId,
