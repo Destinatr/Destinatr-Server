@@ -11,6 +11,8 @@ import * as database from "./model/database";
 import { Index } from './route/index';
 import { ParkingRoute } from './route/parking';
 
+import { StationnementMtl } from './controller/stationnement_mtl';
+
 export class Application {
 
     public app: express.Application;
@@ -63,5 +65,10 @@ export class Application {
                 error: {}
             });
         });
+    }
+
+    public parse() {
+        let mtl = new StationnementMtl();
+        mtl.parseParking();
     }
 }

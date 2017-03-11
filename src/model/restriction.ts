@@ -9,6 +9,7 @@ export let Mixed = mongoose.Schema.Types.Mixed;
 
 export interface RestrictionModel extends mongoose.Document {
     code: string;
+    toujours?: boolean;
     journee?: string[];
     moisDebut?: string[];
     moisFin?: string[];
@@ -20,6 +21,10 @@ let schema = new Schema({
             code: {
                 type: String,
                 required: true
+            },
+            toujours: {
+                type: Boolean,
+                required: false
             },
             journee: {
                 type: [String],
