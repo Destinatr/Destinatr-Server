@@ -8,6 +8,8 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import { Index } from './route/index';
 
+import { StationnementMtl } from './controller/stationnement_mtl';
+
 export class Application {
 
     public app: express.Application;
@@ -22,6 +24,7 @@ export class Application {
         this.config();
 
         this.routes();
+        this.parse();
     }
 
     private config() {
@@ -54,5 +57,10 @@ export class Application {
                 error: {}
             });
         });
+    }
+
+    public parse() {
+        let mtl = new StationnementMtl();
+        mtl.parseSignalec();
     }
 }
