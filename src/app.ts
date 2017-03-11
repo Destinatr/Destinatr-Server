@@ -6,6 +6,8 @@ import * as logger from 'morgan';
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
+import * as database from "./model/database";
+
 import { Index } from './route/index';
 
 export class Application {
@@ -17,6 +19,8 @@ export class Application {
     }
 
     constructor() {
+        database.initialize("ds021172.mlab.com:21172/destinatr", process.env.USERNAME_DB, process.env.PASSWORD_DB);
+
         this.app = express();
 
         this.config();

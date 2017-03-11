@@ -38,7 +38,7 @@ export interface IWrite<T> {
     delete: (_id: string) => Promise<any>;
 }
 
-export class CollectionBase<T extends mongoose.Document> implements IRead<T>, IWrite<T> {
+export class RepositoryBase<T extends mongoose.Document> implements IRead<T>, IWrite<T> {
 
     protected _model: mongoose.Model<mongoose.Document>;
 
