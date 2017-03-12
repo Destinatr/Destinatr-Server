@@ -33,6 +33,7 @@ build
 sets
 .tscache
 .vscode/launch.json
+.idea
 ecosystem.config.js
 
 # Optional npm cache directory
@@ -40,3 +41,5 @@ ecosystem.config.js
 
 # Optional REPL history
 .node_repl_history
+
+
