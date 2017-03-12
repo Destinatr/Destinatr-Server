@@ -87,6 +87,30 @@ module Route {
             }
         }
 
+        private getDistanceFromLatLonInM(lat1, lon1, lat2, lon2) {
+            let R = 6371; // Radius of the earth in km
+            let dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
+            let dLon = this.deg2rad(lon2 - lon1);
+            let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            let d = R * c; // Distance in km
+            return d * 1000;
+        }
+
+        private deg2rad(deg) {
+            return deg * (Math.PI / 180);
+        }
+
+        private distanceVal(x: number) {
+            return -189.5038 + (4.007324 - -189.5038) / (1 + Math.pow((x / 1699694), 0.3677176));
+        }
+
+        private costVal(x: number) {
+            return -1487.258 + (0.9846472 - -1487.258) / (1 + Math.pow((x / 6675845000), 0.3959707));
+        }
+
         private getNearestParkings(req: express.Request, res: express.Response) {
             // tslint:disable-next-line:max-line-length
             if (!req.params["latitude"] || !req.params["longitude"] || !req.params["distanceRadius"] || !req.params["pageNumber"] || !req.params["pageSize"]) {
@@ -158,6 +182,24 @@ module Route {
                             / Number(pageSize));
                         if (remainingPages < 0) {
                             remainingPages = 0;
+                        }
+
+                        let ratingValues = [1, 2, 3, 4, 5];
+
+                        for (let spot of avaliableSpots) {
+                            let s: any = {
+                                destLat: req.params["latitude"],
+                                destLong: req.params["longitude"],
+                                parkLat: spot.position.coordinates[1],
+                                parkLong: spot.position.coordinates[0],
+                                rating: ratingValues[Math.floor(Math.random() * 5)],
+                                cost: Math.floor(Math.random() * 500),
+                                score: 0
+                            };
+                            s.score = this.distanceVal(Math.abs(this.getDistanceFromLatLonInM(s.destLat,
+                                    s.destLong, s.parkLat, s.parkLong))) + s.rating + this.costVal(s.cost);
+                            console.log(s.destLat + ', ' + s.destLong + ', ' + s.parkLat + ', ' + s.parkLong
+                                + ', ' + s.rating + ', ' + s.cost + ', ' + s.score);
                         }
                         res.json({ success: true, parkings: avaliableSpots, remainingPages: remainingPages });
                     });
