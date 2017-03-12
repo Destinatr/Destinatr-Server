@@ -33,54 +33,54 @@ module Route {
                     pageNumber: 0,
                     pageSize: 200
                 }).then((parkings: ParkingModel[]) => {
-                        let avaliableSpots: ParkingModel[] = [];
-                        let date: Date = new Date();
-                        let currentMonth = date.getMonth();
-                        let currentDay = date.getDay();
-                        let currentHours = date.getHours();
-                        let currentMinutes = date.getMinutes();
-                        let self = this;
-                        for (let parking of parkings) {
-                            if (!parking.restriction) {
+                    let avaliableSpots: ParkingModel[] = [];
+                    let date: Date = new Date();
+                    let currentMonth = date.getMonth();
+                    let currentDay = date.getDay();
+                    let currentHours = date.getHours();
+                    let currentMinutes = date.getMinutes();
+                    let self = this;
+                    for (let parking of parkings) {
+                        if (!parking.restriction) {
+                            avaliableSpots.push(parking);
+                        } else if (!parking.restriction.moisDebut && !parking.restriction.journee &&
+                            !parking.restriction.heureDebut) {
+                            avaliableSpots.push(parking);
+                        } else if (parking.restriction.journee) {
+                            if (parking.restriction.journee.indexOf(self.days[currentDay]) === -1) {
                                 avaliableSpots.push(parking);
-                            } else if (!parking.restriction.moisDebut && !parking.restriction.journee &&
-                                !parking.restriction.heureDebut) {
-                                avaliableSpots.push(parking);
-                            } else if (parking.restriction.journee) {
-                                if (parking.restriction.journee.indexOf(self.days[currentDay]) === -1) {
-                                    avaliableSpots.push(parking);
-                                }
-                            } else if (parking.restriction.heureDebut) {
-                                let startHours: string[];
-                                let endHours: string[];
-                                let avaliable = false;
-                                for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
-                                    startHours = parking.restriction.heureDebut[i].split("h");
-                                    endHours = parking.restriction.heureFin[i].split("h");
-                                    if (startHours[1] !== "") {
-                                        if (endHours[1] !== "") {
+                            }
+                        } else if (parking.restriction.heureDebut) {
+                            let startHours: string[];
+                            let endHours: string[];
+                            let avaliable = false;
+                            for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
+                                startHours = parking.restriction.heureDebut[i].split("h");
+                                endHours = parking.restriction.heureFin[i].split("h");
+                                if (startHours[1] !== "") {
+                                    if (endHours[1] !== "") {
+                                        // tslint:disable-next-line:max-line-length
+                                        if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
+                                            avaliable = true;
+                                        } else {
                                             // tslint:disable-next-line:max-line-length
-                                            if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
+                                            if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
                                                 avaliable = true;
                                             } else {
-                                                // tslint:disable-next-line:max-line-length
-                                                if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
-                                                    avaliable = true;
-                                                } else {
-                                                    avaliable = false;
-                                                    break;
-                                                }
+                                                avaliable = false;
+                                                break;
                                             }
                                         }
                                     }
                                 }
-                                if (avaliable) {
-                                    avaliableSpots.push(parking);
-                                }
+                            }
+                            if (avaliable) {
+                                avaliableSpots.push(parking);
                             }
                         }
-                        res.json({ success: true, parkings: avaliableSpots[0]});
-                    }).catch((err) => {
+                    }
+                    res.json({ success: true, parkings: avaliableSpots[0] });
+                }).catch((err) => {
                     res.json({ success: false, err: err });
                 });
             }
@@ -153,8 +153,8 @@ module Route {
                                 }
                             }
                         }
-                        let remainingPages = Math.ceil(count / ( Number(pageSize) * (Number(pageNumber) + 1)) );
-                        remainingPages = (remainingPages) ? remainingPages - 1 : 0;
+                        let remainingPages = Math.ceil((count - (Number(pageSize) * (Number(pageNumber) + 1)))
+                            / Number(pageSize));
                         res.json({ success: true, parkings: avaliableSpots, remainingPages: remainingPages });
                     });
                 }).catch((err) => {
