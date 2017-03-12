@@ -6,6 +6,7 @@ module Conrtoller {
         latitude: number;
         longitude: number;
         distanceRadius: number;
+        timestamp: number;
     }
 
     export class RatingController {
@@ -35,6 +36,15 @@ module Conrtoller {
 
         public getNearestRatings(ratingRequest: RatingRequest): Promise<RatingModel[]> {
             return new Promise<RatingModel[]>((resolve, reject) => {
+                let date = new Date(ratingRequest.timestamp);
+                let gt = date.getHours() - 1;
+                if (gt < 0) {
+                    gt = 0;
+                }
+                let lt = date.getHours() + 1;
+                if (lt > 23) {
+                    lt = 23;
+                }
                 this.ratingRepository.find({
                     position: {
                         $nearSphere: {
@@ -44,6 +54,10 @@ module Conrtoller {
                             },
                             $maxDistance: ratingRequest.distanceRadius
                         }
+                    },
+                    day: date.getDay(),
+                    hours: {
+                        $gte: gt, $lte: lt
                     }
                 }, null, null).then((ratings: RatingModel[]) => {
                     resolve(ratings);

@@ -48,7 +48,19 @@ module Route {
             let longitude = req.params["longitude"];
             let latitude = req.params["latitude"];
             let radius = req.params["distanceRadius"];
-            let timestamp = req.params["timestamp"];
+            let timestamp = Number(req.params["timestamp"]);
+
+            try {
+                let ratings = await RatingController.getInstance().getNearestRatings({
+                    longitude: longitude,
+                    latitude: latitude,
+                    distanceRadius: radius,
+                    timestamp: timestamp
+                });
+                res.json({ success: true, ratings: ratings });
+            } catch (err) {
+                res.status(HttpStatus.Internal_Server_Error).json({ success: false, err: err });
+            }
         }
     }
 }
