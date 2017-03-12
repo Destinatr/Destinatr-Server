@@ -13,15 +13,17 @@ module Route {
             this.router = express.Router();
 
             this.router.post("/", this.create);
+            this.router.get("/:longitude/:latitude/:distanceRadius/:timestamp", this.getPoints);
         }
 
         private async create(req: express.Request, res: express.Response) {
 
-            if (!req.body["latitude"] || !req.body["longitude"] || req.body["day"] === undefined
-                || req.body["hour"] === undefined) {
+            if (!req.body["latitude"] || !req.body["longitude"] || req.body["timestamp"] === undefined
+                || !req.body["value"]) {
                 res.json({ success: false, msg: "Please enter all required information." });
             } else {
                 try {
+                    let date = new Date(req.body["timestamp"]);
                     let rating = await RatingController.getInstance().create(<RatingModel>{
                         position: {
                             type: 'Point',
@@ -30,14 +32,23 @@ module Route {
                                 req.body["latitude"]
                             ]
                         },
-                        day: req.body["day"],
-                        hour: req.body["hour"]
+                        day: date.getDay(),
+                        hour: date.getHours(),
+                        value: req.body["value"]
                     });
                     res.json({success: true, rating: rating});
                 } catch (err) {
                     res.status(HttpStatus.Internal_Server_Error).json({ success: false, err: err });
                 }
             }
+        }
+
+        private async getPoints(req: express.Request, res: express.Response) {
+
+            let longitude = req.params["longitude"];
+            let latitude = req.params["latitude"];
+            let radius = req.params["distanceRadius"];
+            let timestamp = req.params["timestamp"];
         }
     }
 }

@@ -13,7 +13,7 @@ export interface RatingModel extends mongoose.Document {
     position: Position;
     day: number;
     hour: number;
-    rate: number;
+    value: number;
 }
 
 let schema = new Schema({
@@ -26,7 +26,7 @@ let schema = new Schema({
             type: [Number]
         }
     },
-    day: {
+    month: {
         type: Number,
         required: true,
     },
@@ -34,7 +34,7 @@ let schema = new Schema({
         type: Number,
         required: true
     },
-    rate: {
+    value: {
         type: Number,
         required: true
     }
