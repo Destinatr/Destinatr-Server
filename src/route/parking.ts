@@ -156,6 +156,9 @@ module Route {
                         }
                         let remainingPages = Math.ceil((count - (Number(pageSize) * (Number(pageNumber) + 1)))
                             / Number(pageSize));
+                        if (remainingPages < 0) {
+                            remainingPages = 0;
+                        }
                         res.json({ success: true, parkings: avaliableSpots, remainingPages: remainingPages });
                     });
                 }).catch((err) => {
