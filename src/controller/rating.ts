@@ -37,11 +37,11 @@ module Conrtoller {
         public getNearestRatings(ratingRequest: RatingRequest): Promise<RatingModel[]> {
             return new Promise<RatingModel[]>((resolve, reject) => {
                 let date = new Date(ratingRequest.timestamp);
-                let gt = date.getHours() - 1;
+                let gt = date.getHours() - 4;
                 if (gt < 0) {
                     gt = 0;
                 }
-                let lt = date.getHours() + 1;
+                let lt = date.getHours() + 4;
                 if (lt > 23) {
                     lt = 23;
                 }
