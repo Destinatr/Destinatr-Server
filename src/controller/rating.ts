@@ -57,7 +57,7 @@ module Conrtoller {
                         }
                     },
                     day: date.getDay(),
-                    hours: {
+                    hour: {
                         $gte: gt, $lte: lt
                     }
                 }, null, null).then((ratings: RatingModel[]) => {
