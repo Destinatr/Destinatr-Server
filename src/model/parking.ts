@@ -19,7 +19,7 @@ export interface Rating {
 export interface ParkingModel extends mongoose.Document {
     position: Position;
     restriction?: RestrictionModel;
-    rating: Rating[];
+    rating: number;
 }
 
 let schema = new Schema({
@@ -38,16 +38,8 @@ let schema = new Schema({
         ref: 'restriction'
     },
     rating: {
-        type: [{
-            rating: Number,
-            day: Number,
-            hour: Number
-        }],
-        default: {
-            rating: 0,
-            day: 0,
-            hour: 0
-        }
+        type: Number,
+        default: 0
     }
 });
 
