@@ -153,7 +153,8 @@ module Route {
                                 }
                             }
                         }
-                        let remaningPages = Math.ceil(count / (pageSize * (pageNumber + 1))) - 1;
+                        let remaningPages = Math.ceil(count / ( Number(pageSize) * (Number(pageNumber) + 1)) );
+                        remaningPages--;
                         res.json({ success: true, parkings: avaliableSpots, remaningPages: remaningPages });
                     });
                 }).catch((err) => {
