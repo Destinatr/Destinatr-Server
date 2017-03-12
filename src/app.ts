@@ -10,6 +10,7 @@ import * as database from "./model/database";
 
 import { Index } from './route/index';
 import { ParkingRoute } from './route/parking';
+import { Rating } from './route/rating';
 
 import { StationnementMtl } from './controller/stationnement_mtl';
 import { StationnementSherb } from './controller/stationnement_sherb';
@@ -50,9 +51,11 @@ export class Application {
 
         let index: Index = new Index();
         let parking: ParkingRoute = new ParkingRoute();
+        let rating: Rating = new Rating();
 
         this.app.use("/", index.router);
         this.app.use("/parking", parking.router);
+        this.app.use("/rating", rating.router);
 
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
             let err = new Error('Not Found');
@@ -75,5 +78,6 @@ export class Application {
         //sherb.parseBorne();
         //sherb.parsePublicParking();
         //mtl.parseParking();
+        //mtl.parseNonFreeParking();
     }
 }
