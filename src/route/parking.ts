@@ -159,7 +159,7 @@ module Route {
                                 s.destLong, s.parkLat, s.parkLong))) + s.rating + this.costVal(s.cost);
                         if (s.score > maxScore) {
                             maxScore = s.score;
-                            index = i
+                            index = i;
                         }
                     }
                     res.json({ success: true, parkings: availableSpots[index] });
