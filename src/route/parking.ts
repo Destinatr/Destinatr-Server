@@ -153,9 +153,9 @@ module Route {
                                 }
                             }
                         }
-                        let remaningPages = Math.ceil(count / ( Number(pageSize) * (Number(pageNumber) + 1)) );
-                        remaningPages = (remaningPages) ? remaningPages - 1 : 0;
-                        res.json({ success: true, parkings: avaliableSpots, remaningPages: remaningPages });
+                        let remainingPages = Math.ceil(count / ( Number(pageSize) * (Number(pageNumber) + 1)) );
+                        remainingPages = (remainingPages) ? remainingPages - 1 : 0;
+                        res.json({ success: true, parkings: avaliableSpots, remainingPages: remainingPages });
                     });
                 }).catch((err) => {
                     res.json({ success: false, err: err });
