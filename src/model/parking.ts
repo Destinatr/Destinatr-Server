@@ -10,10 +10,16 @@ export interface Position {
     coordinates: number[];
 }
 
+export interface Rating {
+    rating: number;
+    day: number;
+    hour: number;
+}
+
 export interface ParkingModel extends mongoose.Document {
     position: Position;
     restriction?: RestrictionModel;
-    rating: number;
+    rating: Rating;
 }
 
 let schema = new Schema({
@@ -32,8 +38,16 @@ let schema = new Schema({
         ref: 'restriction'
     },
     rating: {
-        type: Number,
-        default: 0
+        type: {
+            rating: Number,
+            day: Number,
+            hour: Number
+        },
+        default: {
+            rating: 0,
+            day: 0,
+            hour: 0
+        }
     }
 });
 
@@ -42,6 +56,18 @@ export let parkingSchema = mongoose.model<ParkingModel>("parking", schema, "park
 export class ParkingRepository extends RepositoryBase<ParkingModel> {
     constructor() {
         super(parkingSchema);
+    }
+
+    public findOneAndPopulate(cond?: Object): Promise<ParkingModel> {
+        return new Promise<ParkingModel>((resolve, reject) => {
+            this._model.findOne(cond, (err: any, res: ParkingModel) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res);
+                }
+            }).populate('restriction');
+        });
     }
 
     // tslint:disable-next-line:max-line-length
@@ -53,7 +79,7 @@ export class ParkingRepository extends RepositoryBase<ParkingModel> {
                 } else {
                     resolve(res);
                 }
-            }).sort({timestamp: 1}).skip(skip).limit(limit).populate('restriction');
+            }).skip(skip).limit(limit).populate('restriction');
         });
     }
 

@@ -50,6 +50,26 @@ module Conrtoller {
             });
         }
 
+        public getNearestParking(parkingRequest: ParkingRequest): Promise<ParkingModel> {
+            return new Promise<ParkingModel>((resolve, reject) => {
+                this.parkingRepository.findOneAndPopulate({
+                    position: {
+                        $nearSphere: {
+                            $geometry: {
+                                type: "Point",
+                                coordinates: [Number(parkingRequest.longitude), Number(parkingRequest.latitude)]
+                            },
+                            $maxDistance: parkingRequest.distanceRadius
+                        }
+                    }
+                }).then((parking: ParkingModel) => {
+                    resolve(parking);
+                }).catch((err) => {
+                    reject(err);
+                });
+            });
+        }
+
         public getNearestParkings(parkingRequest: ParkingRequest): Promise<ParkingModel[]> {
             return new Promise<ParkingModel[]>((resolve, reject) => {
                 this.parkingRepository.findAndPopulate({
