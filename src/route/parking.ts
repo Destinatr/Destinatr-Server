@@ -1,7 +1,6 @@
 import * as express from 'express';
 import { ParkingController } from '../controller/parking';
 import { ParkingRepository, ParkingModel } from '../model/parking';
-import { HttpStatus } from '../model/http_status';
 
 module Route {
 
@@ -34,7 +33,7 @@ module Route {
                     pageNumber: 0,
                     pageSize: 200
                 }).then((parkings: ParkingModel[]) => {
-                    let avaliableSpots: ParkingModel[] = [];
+                    let availableSpots: ParkingModel[] = [];
                     let date: Date = new Date();
                     let currentMonth = date.getMonth();
                     let currentDay = date.getDay();
@@ -43,20 +42,20 @@ module Route {
                     let self = this;
                     for (let parking of parkings) {
                         if (!parking.restriction) {
-                            avaliableSpots.push(parking);
+                            availableSpots.push(parking);
                         } else if (!parking.restriction.mois && !parking.restriction.journee &&
                             !parking.restriction.heureDebut) {
-                            avaliableSpots.push(parking);
+                            availableSpots.push(parking);
                         } else if (parking.restriction.mois) {
                             if (parking.restriction.mois.indexOf(currentDay) === -1) {
-                                avaliableSpots.push(parking);
+                                availableSpots.push(parking);
                             } else if (parking.restriction.journee) {
                                 if (parking.restriction.journee.indexOf(self.days[currentDay]) === -1) {
-                                    avaliableSpots.push(parking);
+                                    availableSpots.push(parking);
                                 } else if (parking.restriction.heureDebut) {
                                     let startHours: string[];
                                     let endHours: string[];
-                                    let avaliable = false;
+                                    let available = false;
                                     for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
                                         startHours = parking.restriction.heureDebut[i].split("h");
                                         endHours = parking.restriction.heureFin[i].split("h");
@@ -64,31 +63,31 @@ module Route {
                                             if (endHours[1] !== "") {
                                                 // tslint:disable-next-line:max-line-length
                                                 if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
-                                                    avaliable = true;
+                                                    available = true;
                                                 } else {
                                                     // tslint:disable-next-line:max-line-length
                                                     if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
-                                                        avaliable = true;
+                                                        available = true;
                                                     } else {
-                                                        avaliable = false;
+                                                        available = false;
                                                         break;
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                    if (avaliable) {
-                                        avaliableSpots.push(parking);
+                                    if (available) {
+                                        availableSpots.push(parking);
                                     }
                                 }
                             }
                         } else if (parking.restriction.journee) {
                             if (parking.restriction.journee.indexOf(self.days[currentDay]) === -1) {
-                                avaliableSpots.push(parking);
+                                availableSpots.push(parking);
                             } else if (parking.restriction.heureDebut) {
                                 let startHours: string[];
                                 let endHours: string[];
-                                let avaliable = false;
+                                let available = false;
                                 for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
                                     startHours = parking.restriction.heureDebut[i].split("h");
                                     endHours = parking.restriction.heureFin[i].split("h");
@@ -96,27 +95,27 @@ module Route {
                                         if (endHours[1] !== "") {
                                             // tslint:disable-next-line:max-line-length
                                             if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
-                                                avaliable = true;
+                                                available = true;
                                             } else {
                                                 // tslint:disable-next-line:max-line-length
                                                 if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
-                                                    avaliable = true;
+                                                    available = true;
                                                 } else {
-                                                    avaliable = false;
+                                                    available = false;
                                                     break;
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                if (avaliable) {
-                                    avaliableSpots.push(parking);
+                                if (available) {
+                                    availableSpots.push(parking);
                                 }
                             }
                         } else if (parking.restriction.heureDebut) {
                             let startHours: string[];
                             let endHours: string[];
-                            let avaliable = false;
+                            let available = false;
                             for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
                                 startHours = parking.restriction.heureDebut[i].split("h");
                                 endHours = parking.restriction.heureFin[i].split("h");
@@ -124,53 +123,50 @@ module Route {
                                     if (endHours[1] !== "") {
                                         // tslint:disable-next-line:max-line-length
                                         if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
-                                            avaliable = true;
+                                            available = true;
                                         } else {
                                             // tslint:disable-next-line:max-line-length
                                             if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
-                                                avaliable = true;
+                                                available = true;
                                             } else {
-                                                avaliable = false;
+                                                available = false;
                                                 break;
                                             }
                                         }
                                     }
                                 }
                             }
-                            if (avaliable) {
-                                avaliableSpots.push(parking);
+                            if (available) {
+                                availableSpots.push(parking);
                             }
                         }
                     }
-                    res.json({ success: true, parkings: avaliableSpots[0] });
+
+                    let index = 0;
+                    let maxScore = -1000;
+
+                    for (let i = 0; i < availableSpots.length; ++i) {
+                        let s: any = {
+                            destLat: req.params["latitude"],
+                            destLong: req.params["longitude"],
+                            parkLat: availableSpots[i].position.coordinates[1],
+                            parkLong: availableSpots[i].position.coordinates[0],
+                            rating: 0,
+                            cost: availableSpots[i].hourPrize,
+                            score: 0
+                        };
+                        s.score = this.distanceVal(Math.abs(this.getDistanceFromLatLonInM(s.destLat,
+                                s.destLong, s.parkLat, s.parkLong))) + s.rating + this.costVal(s.cost);
+                        if (s.score > maxScore) {
+                            maxScore = s.score;
+                            index = i
+                        }
+                    }
+                    res.json({ success: true, parkings: availableSpots[index] });
                 }).catch((err) => {
                     res.json({ success: false, err: err });
                 });
             }
-        }
-
-        private getDistanceFromLatLonInM(lat1, lon1, lat2, lon2) {
-            let R = 6371; // Radius of the earth in km
-            let dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
-            let dLon = this.deg2rad(lon2 - lon1);
-            let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
-                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            let d = R * c; // Distance in km
-            return d * 1000;
-        }
-
-        private deg2rad(deg) {
-            return deg * (Math.PI / 180);
-        }
-
-        private distanceVal(x: number) {
-            return -189.5038 + (4.007324 - -189.5038) / (1 + Math.pow((x / 1699694), 0.3677176));
-        }
-
-        private costVal(x: number) {
-            return -1487.258 + (0.9846472 - -1487.258) / (1 + Math.pow((x / 6675845000), 0.3959707));
         }
 
         private getNearestParkings(req: express.Request, res: express.Response) {
@@ -194,7 +190,7 @@ module Route {
                         pageNumber: pageNumber,
                         pageSize: pageSize
                     }).then((count: number) => {
-                        let avaliableSpots: ParkingModel[] = [];
+                        let availableSpots: ParkingModel[] = [];
                         let date: Date = new Date();
                         let currentMonth = date.getMonth();
                         let currentDay = date.getDay();
@@ -210,7 +206,7 @@ module Route {
                                                 if (day.heureDebut) {
                                                     let startHours: string[];
                                                     let endHours: string[];
-                                                    let avaliable = false;
+                                                    let available = false;
                                                     for (let i = 0; i < day.heureDebut.length; ++i) {
                                                         startHours = day.heureDebut[i].split("h");
                                                         endHours = day.heureFin[i].split("h");
@@ -219,23 +215,23 @@ module Route {
                                                                 // tslint:disable-next-line:max-line-length
                                                                 if ((Number(startHours[0]) < currentHours && Number(startHours[1]) < currentMinutes)) {
                                                                     if ((Number(endHours[0]) > currentHours && Number(endHours[1]) > currentMinutes)) {
-                                                                        avaliable = true;
+                                                                        available = true;
                                                                     } else {
-                                                                        avaliable = false;
+                                                                        available = false;
                                                                         break;
                                                                     }
                                                                 } else {
-                                                                    avaliable = false;
+                                                                    available = false;
                                                                     break;
                                                                 }
                                                             }
                                                         }
                                                     }
-                                                    if (avaliable) {
-                                                        avaliableSpots.push(parking);
+                                                    if (available) {
+                                                        availableSpots.push(parking);
                                                     }
                                                 } else {
-                                                    avaliableSpots.push(parking);
+                                                    availableSpots.push(parking);
                                                 }
                                             }
                                         }
@@ -243,20 +239,20 @@ module Route {
                                 }
                             }
                             if (!parking.restriction) {
-                                avaliableSpots.push(parking);
+                                availableSpots.push(parking);
                             } else if (!parking.restriction.mois && !parking.restriction.journee &&
                                 !parking.restriction.heureDebut) {
-                                avaliableSpots.push(parking);
+                                availableSpots.push(parking);
                             } else if (parking.restriction.mois) {
                                 if (parking.restriction.mois.indexOf(currentDay) === -1) {
-                                    avaliableSpots.push(parking);
+                                    availableSpots.push(parking);
                                 } else if (parking.restriction.journee) {
                                     if (parking.restriction.journee.indexOf(self.days[currentDay]) === -1) {
-                                        avaliableSpots.push(parking);
+                                        availableSpots.push(parking);
                                     } else if (parking.restriction.heureDebut) {
                                         let startHours: string[];
                                         let endHours: string[];
-                                        let avaliable = false;
+                                        let available = false;
                                         for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
                                             startHours = parking.restriction.heureDebut[i].split("h");
                                             endHours = parking.restriction.heureFin[i].split("h");
@@ -264,31 +260,31 @@ module Route {
                                                 if (endHours[1] !== "") {
                                                     // tslint:disable-next-line:max-line-length
                                                     if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
-                                                        avaliable = true;
+                                                        available = true;
                                                     } else {
                                                         // tslint:disable-next-line:max-line-length
                                                         if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
-                                                            avaliable = true;
+                                                            available = true;
                                                         } else {
-                                                            avaliable = false;
+                                                            available = false;
                                                             break;
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                        if (avaliable) {
-                                            avaliableSpots.push(parking);
+                                        if (available) {
+                                            availableSpots.push(parking);
                                         }
                                     }
                                 }
                             } else if (parking.restriction.journee) {
                                 if (parking.restriction.journee.indexOf(self.days[currentDay]) === -1) {
-                                    avaliableSpots.push(parking);
+                                    availableSpots.push(parking);
                                 } else if (parking.restriction.heureDebut) {
                                     let startHours: string[];
                                     let endHours: string[];
-                                    let avaliable = false;
+                                    let available = false;
                                     for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
                                         startHours = parking.restriction.heureDebut[i].split("h");
                                         endHours = parking.restriction.heureFin[i].split("h");
@@ -296,27 +292,27 @@ module Route {
                                             if (endHours[1] !== "") {
                                                 // tslint:disable-next-line:max-line-length
                                                 if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
-                                                    avaliable = true;
+                                                    available = true;
                                                 } else {
                                                     // tslint:disable-next-line:max-line-length
                                                     if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
-                                                        avaliable = true;
+                                                        available = true;
                                                     } else {
-                                                        avaliable = false;
+                                                        available = false;
                                                         break;
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                    if (avaliable) {
-                                        avaliableSpots.push(parking);
+                                    if (available) {
+                                        availableSpots.push(parking);
                                     }
                                 }
                             } else if (parking.restriction.heureDebut) {
                                 let startHours: string[];
                                 let endHours: string[];
-                                let avaliable = false;
+                                let available = false;
                                 for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
                                     startHours = parking.restriction.heureDebut[i].split("h");
                                     endHours = parking.restriction.heureFin[i].split("h");
@@ -324,21 +320,21 @@ module Route {
                                         if (endHours[1] !== "") {
                                             // tslint:disable-next-line:max-line-length
                                             if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
-                                                avaliable = true;
+                                                available = true;
                                             } else {
                                                 // tslint:disable-next-line:max-line-length
                                                 if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
-                                                    avaliable = true;
+                                                    available = true;
                                                 } else {
-                                                    avaliable = false;
+                                                    available = false;
                                                     break;
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                if (avaliable) {
-                                    avaliableSpots.push(parking);
+                                if (available) {
+                                    availableSpots.push(parking);
                                 }
                             }
                         }
@@ -348,29 +344,36 @@ module Route {
                             remainingPages = 0;
                         }
 
-                        let ratingValues = [1, 2, 3, 4, 5];
-
-                        for (let spot of avaliableSpots) {
-                            let s: any = {
-                                destLat: req.params["latitude"],
-                                destLong: req.params["longitude"],
-                                parkLat: spot.position.coordinates[1],
-                                parkLong: spot.position.coordinates[0],
-                                rating: ratingValues[Math.floor(Math.random() * 5)],
-                                cost: Math.floor(Math.random() * 500),
-                                score: 0
-                            };
-                            s.score = this.distanceVal(Math.abs(this.getDistanceFromLatLonInM(s.destLat,
-                                    s.destLong, s.parkLat, s.parkLong))) + s.rating + this.costVal(s.cost);
-                            console.log(s.destLat + ', ' + s.destLong + ', ' + s.parkLat + ', ' + s.parkLong
-                                + ', ' + s.rating + ', ' + s.cost + ', ' + s.score);
-                        }
-                        res.json({ success: true, parkings: avaliableSpots, remainingPages: remainingPages });
+                        res.json({ success: true, parkings: availableSpots, remainingPages: remainingPages });
                     });
                 }).catch((err) => {
                     res.json({ success: false, err: err });
                 });
             }
+        }
+
+        private getDistanceFromLatLonInM(lat1, lon1, lat2, lon2) {
+            let R = 6371; // Radius of the earth in km
+            let dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
+            let dLon = this.deg2rad(lon2 - lon1);
+            let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            let d = R * c; // Distance in km
+            return d * 1000;
+        }
+
+        private deg2rad(deg) {
+            return deg * (Math.PI / 180);
+        }
+
+        private distanceVal(x: number) {
+            return -189.5038 + (4.007324 - -189.5038) / (1 + Math.pow((x / 1699694), 0.3677176));
+        }
+
+        private costVal(x: number) {
+            return -1487.258 + (0.9846472 - -1487.258) / (1 + Math.pow((x / 6675845000), 0.3959707));
         }
     }
 }
