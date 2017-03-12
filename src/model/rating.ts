@@ -26,7 +26,7 @@ let schema = new Schema({
             type: [Number]
         }
     },
-    month: {
+    day: {
         type: Number,
         required: true,
     },
