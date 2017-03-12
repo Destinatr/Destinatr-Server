@@ -45,6 +45,7 @@ module Conrtoller {
                 if (lt > 23) {
                     lt = 23;
                 }
+                console.log(gt + "<= hours <= " + lt);
                 this.ratingRepository.find({
                     position: {
                         $nearSphere: {
