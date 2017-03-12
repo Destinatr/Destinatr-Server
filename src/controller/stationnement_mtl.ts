@@ -49,18 +49,32 @@ module Controller {
         private repo: RestrictionRepository;
         private repoParking: ParkingRepository;
         private repoPermission: PermissionRepository;
+        private months;
 
         constructor() {
             this.repo = new RestrictionRepository();
             this.repoParking = new ParkingRepository();
             this.repoPermission = new PermissionRepository();
+            this.months = [];
+            this.months["janvier"] = 0;
+            this.months["fevrier"] = 1;
+            this.months["mars"] = 2;
+            this.months["avril"] = 3;
+            this.months["mai"] = 4;
+            this.months["juin"] = 5;
+            this.months["juillet"] = 6;
+            this.months["aout"] = 7;
+            this.months["septembre"] = 8;
+            this.months["octobre"] = 9;
+            this.months["novembre"] = 10;
+            this.months["decembre"] = 11;
         }
 
         public async parseParking() {
             return new Promise<boolean>(async (resolve, reject) => {
                 let data = "";
                 let stream = fs.createReadStream(__dirname +
-                    "/../../signalisation.json");
+                    "/../../sets/signalisation.json");
                 stream.on("data", (chunk: Buffer) => {
                     if (!chunk) {
                         reject();
@@ -71,13 +85,15 @@ module Controller {
                 let datas = [];
                 stream.on("end", async () => {
                     let stationnements: mtl.StationnementMtl = JSON.parse(data);
+                    let ii = 0;
                     for (let set of stationnements.features) {
                         if (set.properties.DESCRIPTION_CAT === "STATIONNEMENT") {
+                            ++ii;
                             let restriction = await this.repo.findOne({
                                 code: set.properties.CODE_RPA
                             });
                             if (!restriction) {
-                                console.log("NOPE");
+                                console.log("NOPE - " + ii);
                                 continue;
                             }
                             datas.push(set);
@@ -98,10 +114,12 @@ module Controller {
         public async parseSignalec() {
             return new Promise<boolean>(async (resolve, reject) => {
                 let data = XLS.readFile(__dirname +
-                    "/../../signalec-descriptifs.ods");
+                    "/../../sets/signalec-descriptifs.ods");
                 let json: mtl.Signalec[] = XLS.utils.sheet_to_json(data.Sheets[data.SheetNames[0]]);
                 let kk = [];
+                let ii = 0;
                 for (let set of json) {
+                    ++ii;
                     let restriction: RestrictionModel = <RestrictionModel>{};
                     restriction.code = set.CODE_RPA;
                     if (!set.DESCRIPTION_RPA) {
@@ -113,7 +131,7 @@ module Controller {
                     let days: string[] = this.findDays(desc);
                     let months: string[] = this.findMonths(desc);
                     if (time.length === 0 && days.length === 0 && months.length === 0) {
-                        console.log("NOPE");
+                        console.log("NOPE" + ii);
                         continue;
                     }
                     kk.push(set);
@@ -126,6 +144,14 @@ module Controller {
                             restriction.heureDebut.push(time[i]);
                         } else {
                             restriction.heureFin.push(time[i]);
+                        }
+                    }
+                    if (months.length === 2) {
+                        let i1 = this.months[months[0]];
+                        let i2 = this.months[months[1]];
+                        restriction.mois = [i1, i2];
+                        while ((++i1 % 12) !== i2) {
+                            restriction.mois.push(i1);
                         }
                     }
                     await this.repo.create(restriction);

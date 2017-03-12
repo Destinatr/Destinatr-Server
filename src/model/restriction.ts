@@ -11,7 +11,7 @@ export interface RestrictionModel extends mongoose.Document {
     code: string;
     toujours?: boolean;
     journee?: string[];
-    mois?: string[];
+    mois?: number[];
     heureDebut?: string[];
     heureFin?: string[];
 }
@@ -30,7 +30,7 @@ let schema = new Schema({
         required: false
     },
     mois: {
-        type: [String],
+        type: [Number],
         required: false
     },
     heureDebut: {

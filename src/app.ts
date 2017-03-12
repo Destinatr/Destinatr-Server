@@ -12,6 +12,7 @@ import { Index } from './route/index';
 import { ParkingRoute } from './route/parking';
 
 import { StationnementMtl } from './controller/stationnement_mtl';
+import { StationnementSherb } from './controller/stationnement_sherb';
 
 export class Application {
 
@@ -22,7 +23,7 @@ export class Application {
     }
 
     constructor() {
-        database.initialize("ds021172.mlab.com:21172/destinatr", process.env.USERNAME_DB, process.env.PASSWORD_DB);
+        database.initialize("ds129260.mlab.com:29260/destinatr_prod", process.env.USERNAME_DB, process.env.PASSWORD_DB);
 
         this.app = express();
 
@@ -69,6 +70,10 @@ export class Application {
 
     public parse() {
         let mtl = new StationnementMtl();
-        mtl.parseNonFreeParking();
+        let sherb = new StationnementSherb();
+        //mtl.parseSignalec();
+        //sherb.parseBorne();
+        //sherb.parsePublicParking();
+        //mtl.parseParking();
     }
 }

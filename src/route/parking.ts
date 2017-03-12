@@ -44,7 +44,7 @@ module Route {
                     for (let parking of parkings) {
                         if (!parking.restriction) {
                             avaliableSpots.push(parking);
-                        } else if (!parking.restriction.moisDebut && !parking.restriction.journee &&
+                        } else if (!parking.restriction.mois && !parking.restriction.journee &&
                             !parking.restriction.heureDebut) {
                             avaliableSpots.push(parking);
                         } else if (parking.restriction.journee) {
@@ -118,7 +118,7 @@ module Route {
                         for (let parking of parkings) {
                             if (!parking.restriction) {
                                 avaliableSpots.push(parking);
-                            } else if (!parking.restriction.moisDebut && !parking.restriction.journee &&
+                            } else if (!parking.restriction.mois && !parking.restriction.journee &&
                                 !parking.restriction.heureDebut) {
                                 avaliableSpots.push(parking);
                             } else if (parking.restriction.journee) {
