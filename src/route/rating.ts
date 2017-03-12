@@ -17,8 +17,8 @@ module Route {
 
         private async create(req: express.Request, res: express.Response) {
 
-            if (!req.body["latitude"] || !req.body["longitude"] || req.body["day"] === undefined
-                || req.body["hour"] === undefined) {
+            if (!req.body["latitude"] || !req.body["longitude"] || req.body["timestamp"] === undefined
+                || !req.body["value"]) {
                 res.json({ success: false, msg: "Please enter all required information." });
             } else {
                 try {
@@ -30,8 +30,8 @@ module Route {
                                 req.body["latitude"]
                             ]
                         },
-                        day: req.body["day"],
-                        hour: req.body["hour"]
+                        timestamp: req.body["timestamp"],
+                        value: req.body["value"]
                     });
                     res.json({success: true, rating: rating});
                 } catch (err) {
