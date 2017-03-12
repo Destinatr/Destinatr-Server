@@ -13,6 +13,7 @@ module Route {
             this.router = express.Router();
 
             this.router.post("/", this.create);
+            this.router.get("/:longitude/:latitude/:distanceRadius/:timestamp", this.getPoints);
         }
 
         private async create(req: express.Request, res: express.Response) {
@@ -22,6 +23,7 @@ module Route {
                 res.json({ success: false, msg: "Please enter all required information." });
             } else {
                 try {
+                    let date = new Date(req.body["timestamp"]);
                     let rating = await RatingController.getInstance().create(<RatingModel>{
                         position: {
                             type: 'Point',
@@ -30,7 +32,8 @@ module Route {
                                 req.body["latitude"]
                             ]
                         },
-                        timestamp: req.body["timestamp"],
+                        day: date.getDay(),
+                        hour: date.getHours(),
                         value: req.body["value"]
                     });
                     res.json({success: true, rating: rating});
@@ -38,6 +41,14 @@ module Route {
                     res.status(HttpStatus.Internal_Server_Error).json({ success: false, err: err });
                 }
             }
+        }
+
+        private async getPoints(req: express.Request, res: express.Response) {
+
+            let longitude = req.params["longitude"];
+            let latitude = req.params["latitude"];
+            let radius = req.params["distanceRadius"];
+            let timestamp = req.params["timestamp"];
         }
     }
 }

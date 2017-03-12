@@ -11,7 +11,8 @@ export interface Position {
 
 export interface RatingModel extends mongoose.Document {
     position: Position;
-    timestamp: number;
+    day: number;
+    hour: number;
     value: number;
 }
 
@@ -25,9 +26,13 @@ let schema = new Schema({
             type: [Number]
         }
     },
-    timestamp: {
+    month: {
         type: Number,
         required: true,
+    },
+    hour: {
+        type: Number,
+        required: true
     },
     value: {
         type: Number,
