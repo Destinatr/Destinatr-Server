@@ -1,0 +1,540 @@
+[{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.5668386028432,
+            45.5760038372319
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 240002,
+        "PANNEAU_ID_PAN": 1188478,
+        "PANNEAU_ID_RPA": 1762,
+        "DESCRIPTION_RPA": "\\P RESERVE DEBARCADERE HANDICAPES EN TOUT TEMPS",
+        "CODE_RPA": "RD-TT",
+        "FLECHE_PAN": 2,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161021000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 299583.579,
+        "Y_EPSG32188": 5048457.227,
+        "Longitude": -73.5668386028432,
+        "Latitude": 45.5760038372319,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Rosemont - La Petite-Patrie"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.5668644965631,
+            45.5760132973046
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 240001,
+        "PANNEAU_ID_PAN": 1188479,
+        "PANNEAU_ID_RPA": 1762,
+        "DESCRIPTION_RPA": "\\P RESERVE DEBARCADERE HANDICAPES EN TOUT TEMPS",
+        "CODE_RPA": "RD-TT",
+        "FLECHE_PAN": 3,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161021000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 299581.559,
+        "Y_EPSG32188": 5048458.28,
+        "Longitude": -73.5668644965631,
+        "Latitude": 45.5760132973046,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Rosemont - La Petite-Patrie"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.5676036744915,
+            45.5441418663109
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 240000,
+        "PANNEAU_ID_PAN": 1188475,
+        "PANNEAU_ID_RPA": 1686,
+        "DESCRIPTION_RPA": "\\P RESERVE HANDICAPES (PICTO)",
+        "CODE_RPA": "R-TD",
+        "FLECHE_PAN": 2,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161021000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 299520.886,
+        "Y_EPSG32188": 5044916.405,
+        "Longitude": -73.5676036744915,
+        "Latitude": 45.5441418663109,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Rosemont - La Petite-Patrie"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.5676379070403,
+            45.5440905103725
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239999,
+        "PANNEAU_ID_PAN": 1188474,
+        "PANNEAU_ID_RPA": 1686,
+        "DESCRIPTION_RPA": "\\P RESERVE HANDICAPES (PICTO)",
+        "CODE_RPA": "R-TD",
+        "FLECHE_PAN": 3,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161021000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 299518.208,
+        "Y_EPSG32188": 5044910.7,
+        "Longitude": -73.5676379070403,
+        "Latitude": 45.5440905103725,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Rosemont - La Petite-Patrie"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6853311242351,
+            45.5480585815461
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239990,
+        "PANNEAU_ID_PAN": 1188429,
+        "PANNEAU_ID_RPA": 1116,
+        "DESCRIPTION_RPA": "PRE-SIGNAL PASSAGE DE CYCLISTES (DROITE)",
+        "CODE_RPA": "PA-K",
+        "FLECHE_PAN": 0,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 290328.654,
+        "Y_EPSG32188": 5045366.159,
+        "Longitude": -73.6853311242351,
+        "Latitude": 45.5480585815461,
+        "DESCRIPTION_CAT": "DANGER",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6853311242351,
+            45.5480585815461
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239990,
+        "PANNEAU_ID_PAN": 1188430,
+        "PANNEAU_ID_RPA": 11,
+        "DESCRIPTION_RPA": "\\A EN TOUT TEMPS",
+        "CODE_RPA": "AD-TT",
+        "FLECHE_PAN": 2,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 290328.654,
+        "Y_EPSG32188": 5045366.159,
+        "Longitude": -73.6853311242351,
+        "Latitude": 45.5480585815461,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6853311242351,
+            45.5480585815461
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239990,
+        "PANNEAU_ID_PAN": 1188431,
+        "PANNEAU_ID_RPA": 14036,
+        "DESCRIPTION_RPA": "\\P 12h-13h JEU. 1 AVRIL AU 1 DEC.",
+        "CODE_RPA": "SU-JJ-A",
+        "FLECHE_PAN": 3,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 290328.654,
+        "Y_EPSG32188": 5045366.159,
+        "Longitude": -73.6853311242351,
+        "Latitude": 45.5480585815461,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6853630679391,
+            45.5475687399705
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239989,
+        "PANNEAU_ID_PAN": 1188425,
+        "PANNEAU_ID_RPA": 11,
+        "DESCRIPTION_RPA": "\\A EN TOUT TEMPS",
+        "CODE_RPA": "AD-TT",
+        "FLECHE_PAN": 2,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 290326.034,
+        "Y_EPSG32188": 5045311.728,
+        "Longitude": -73.6853630679391,
+        "Latitude": 45.5475687399705,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6853630679391,
+            45.5475687399705
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239989,
+        "PANNEAU_ID_PAN": 1188426,
+        "PANNEAU_ID_RPA": 14072,
+        "DESCRIPTION_RPA": "\\P 10h-11h MAR. 1 AVRIL AU 1 DEC.",
+        "CODE_RPA": "SU-ME-A",
+        "FLECHE_PAN": 3,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 290326.034,
+        "Y_EPSG32188": 5045311.728,
+        "Longitude": -73.6853630679391,
+        "Latitude": 45.5475687399705,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6854802356028,
+            45.5480164161757
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 109499,
+        "PANNEAU_ID_PAN": 1188427,
+        "PANNEAU_ID_RPA": 2413,
+        "DESCRIPTION_RPA": "\\P EN TOUT TEMPS",
+        "CODE_RPA": "SD-TT",
+        "FLECHE_PAN": 3,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "4- Poteau en bois",
+        "X_EPSG32188": 290317,
+        "Y_EPSG32188": 5045361.5,
+        "Longitude": -73.6854802356028,
+        "Latitude": 45.5480164161757,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6854802356028,
+            45.5480164161757
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 109499,
+        "PANNEAU_ID_PAN": 1188428,
+        "PANNEAU_ID_RPA": 14072,
+        "DESCRIPTION_RPA": "\\P 10h-11h MAR. 1 AVRIL AU 1 DEC.",
+        "CODE_RPA": "SU-ME-A",
+        "FLECHE_PAN": 2,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "4- Poteau en bois",
+        "X_EPSG32188": 290317,
+        "Y_EPSG32188": 5045361.5,
+        "Longitude": -73.6854802356028,
+        "Latitude": 45.5480164161757,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6847593955068,
+            45.5481535315343
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239988,
+        "PANNEAU_ID_PAN": 1188303,
+        "PANNEAU_ID_RPA": 3107,
+        "DESCRIPTION_RPA": "PRE-SIGNAL AUTO ET VELO",
+        "CODE_RPA": "WI-CD",
+        "FLECHE_PAN": 0,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 1,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 290373.321,
+        "Y_EPSG32188": 5045376.608,
+        "Longitude": -73.6847593955068,
+        "Latitude": 45.5481535315343,
+        "DESCRIPTION_CAT": "DANGER",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6841958066978,
+            45.5478475256141
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 109505,
+        "PANNEAU_ID_PAN": 1188290,
+        "PANNEAU_ID_RPA": 2895,
+        "DESCRIPTION_RPA": "VOIE RESERVEE AUX CYCLISTES (GAUCHE) MACLE ROUGE",
+        "CODE_RPA": "VC-RD-1",
+        "FLECHE_PAN": 0,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 2,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 290417.25,
+        "Y_EPSG32188": 5045342.5,
+        "Longitude": -73.6841958066978,
+        "Latitude": 45.5478475256141,
+        "DESCRIPTION_CAT": "VÉLO",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6841958066978,
+            45.5478475256141
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 109505,
+        "PANNEAU_ID_PAN": 1188291,
+        "PANNEAU_ID_RPA": 2413,
+        "DESCRIPTION_RPA": "\\P EN TOUT TEMPS",
+        "CODE_RPA": "SD-TT",
+        "FLECHE_PAN": 0,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 2,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "1- Tige et base",
+        "X_EPSG32188": 290417.25,
+        "Y_EPSG32188": 5045342.5,
+        "Longitude": -73.6841958066978,
+        "Latitude": 45.5478475256141,
+        "DESCRIPTION_CAT": "STATIONNEMENT",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6850596012136,
+            45.5482555549094
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239984,
+        "PANNEAU_ID_PAN": 1188311,
+        "PANNEAU_ID_RPA": 2895,
+        "DESCRIPTION_RPA": "VOIE RESERVEE AUX CYCLISTES (GAUCHE) MACLE ROUGE",
+        "CODE_RPA": "VC-RD-1",
+        "FLECHE_PAN": 0,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 4,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "4- Poteau en bois",
+        "X_EPSG32188": 290349.906,
+        "Y_EPSG32188": 5045388,
+        "Longitude": -73.6850596012136,
+        "Latitude": 45.5482555549094,
+        "DESCRIPTION_CAT": "VÉLO",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6850596012136,
+            45.5482555549094
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239984,
+        "PANNEAU_ID_PAN": 1188312,
+        "PANNEAU_ID_RPA": 818,
+        "DESCRIPTION_RPA": "VELO",
+        "CODE_RPA": "GV-D",
+        "FLECHE_PAN": 0,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 4,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "4- Poteau en bois",
+        "X_EPSG32188": 290349.906,
+        "Y_EPSG32188": 5045388,
+        "Longitude": -73.6850596012136,
+        "Latitude": 45.5482555549094,
+        "DESCRIPTION_CAT": "VÉLO",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6850596012136,
+            45.5482555549094
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239984,
+        "PANNEAU_ID_PAN": 1188313,
+        "PANNEAU_ID_RPA": 1887,
+        "DESCRIPTION_RPA": "PANONCEAU DE DIRECTION VERT-BLANC - AVANCE A DROITE",
+        "CODE_RPA": "RK-B-2",
+        "FLECHE_PAN": 0,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 4,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "4- Poteau en bois",
+        "X_EPSG32188": 290349.906,
+        "Y_EPSG32188": 5045388,
+        "Longitude": -73.6850596012136,
+        "Latitude": 45.5482555549094,
+        "DESCRIPTION_CAT": "INDICATION",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+},
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -73.6850596012136,
+            45.5482555549094
+        ]
+    },
+    "properties": {
+        "POTEAU_ID_POT": 239984,
+        "PANNEAU_ID_PAN": 1188314,
+        "PANNEAU_ID_RPA": 10273,
+        "DESCRIPTION_RPA": "LA ROUTE VERTE  (VOIE CYCLABLE)",
+        "CODE_RPA": "GV-X",
+        "FLECHE_PAN": 0,
+        "TOPONYME_PAN": null,
+        "POTEAU_VERSION_POT": 4,
+        "DATE_CONCEPTION_POT": "20161020000000",
+        "PAS_SUR_RUE": null,
+        "DESCRIPTION_REP": "En conception",
+        "DESCRIPTION_RTP": "4- Poteau en bois",
+        "X_EPSG32188": 290349.906,
+        "Y_EPSG32188": 5045388,
+        "Longitude": -73.6850596012136,
+        "Latitude": 45.5482555549094,
+        "DESCRIPTION_CAT": "VÉLO",
+        "NOM_ARR": "Ahuntsic - Cartierville"
+    }
+}]

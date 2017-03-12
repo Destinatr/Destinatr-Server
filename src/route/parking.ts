@@ -44,12 +44,74 @@ module Route {
                     for (let parking of parkings) {
                         if (!parking.restriction) {
                             avaliableSpots.push(parking);
-                        } else if (!parking.restriction.moisDebut && !parking.restriction.journee &&
+                        } else if (!parking.restriction.mois && !parking.restriction.journee &&
                             !parking.restriction.heureDebut) {
                             avaliableSpots.push(parking);
+                        } else if (parking.restriction.mois) {
+                            if (parking.restriction.mois.indexOf(currentDay) === -1) {
+                                avaliableSpots.push(parking);
+                            } else if (parking.restriction.journee) {
+                                if (parking.restriction.journee.indexOf(self.days[currentDay]) === -1) {
+                                    avaliableSpots.push(parking);
+                                } else if (parking.restriction.heureDebut) {
+                                    let startHours: string[];
+                                    let endHours: string[];
+                                    let avaliable = false;
+                                    for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
+                                        startHours = parking.restriction.heureDebut[i].split("h");
+                                        endHours = parking.restriction.heureFin[i].split("h");
+                                        if (startHours[1] !== "") {
+                                            if (endHours[1] !== "") {
+                                                // tslint:disable-next-line:max-line-length
+                                                if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
+                                                    avaliable = true;
+                                                } else {
+                                                    // tslint:disable-next-line:max-line-length
+                                                    if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
+                                                        avaliable = true;
+                                                    } else {
+                                                        avaliable = false;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (avaliable) {
+                                        avaliableSpots.push(parking);
+                                    }
+                                }
+                            }
                         } else if (parking.restriction.journee) {
                             if (parking.restriction.journee.indexOf(self.days[currentDay]) === -1) {
                                 avaliableSpots.push(parking);
+                            } else if (parking.restriction.heureDebut) {
+                                let startHours: string[];
+                                let endHours: string[];
+                                let avaliable = false;
+                                for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
+                                    startHours = parking.restriction.heureDebut[i].split("h");
+                                    endHours = parking.restriction.heureFin[i].split("h");
+                                    if (startHours[1] !== "") {
+                                        if (endHours[1] !== "") {
+                                            // tslint:disable-next-line:max-line-length
+                                            if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
+                                                avaliable = true;
+                                            } else {
+                                                // tslint:disable-next-line:max-line-length
+                                                if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
+                                                    avaliable = true;
+                                                } else {
+                                                    avaliable = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if (avaliable) {
+                                    avaliableSpots.push(parking);
+                                }
                             }
                         } else if (parking.restriction.heureDebut) {
                             let startHours: string[];
@@ -140,14 +202,116 @@ module Route {
                         let currentMinutes = date.getMinutes();
                         let self = this;
                         for (let parking of parkings) {
+                            if (parking.permissions) {
+                                for (let permission of parking.permissions) {
+                                    if (permission.days) {
+                                        for (let day of permission.days) {
+                                            if (day.day === self.days[currentDay]) {
+                                                if (day.heureDebut) {
+                                                    let startHours: string[];
+                                                    let endHours: string[];
+                                                    let avaliable = false;
+                                                    for (let i = 0; i < day.heureDebut.length; ++i) {
+                                                        startHours = day.heureDebut[i].split("h");
+                                                        endHours = day.heureFin[i].split("h");
+                                                        if (startHours[1] !== "") {
+                                                            if (endHours[1] !== "") {
+                                                                // tslint:disable-next-line:max-line-length
+                                                                if ((Number(startHours[0]) < currentHours && Number(startHours[1]) < currentMinutes)) {
+                                                                    if ((Number(endHours[0]) > currentHours && Number(endHours[1]) > currentMinutes)) {
+                                                                        avaliable = true;
+                                                                    } else {
+                                                                        avaliable = false;
+                                                                        break;
+                                                                    }
+                                                                } else {
+                                                                    avaliable = false;
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    if (avaliable) {
+                                                        avaliableSpots.push(parking);
+                                                    }
+                                                } else {
+                                                    avaliableSpots.push(parking);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             if (!parking.restriction) {
                                 avaliableSpots.push(parking);
-                            } else if (!parking.restriction.moisDebut && !parking.restriction.journee &&
+                            } else if (!parking.restriction.mois && !parking.restriction.journee &&
                                 !parking.restriction.heureDebut) {
                                 avaliableSpots.push(parking);
+                            } else if (parking.restriction.mois) {
+                                if (parking.restriction.mois.indexOf(currentDay) === -1) {
+                                    avaliableSpots.push(parking);
+                                } else if (parking.restriction.journee) {
+                                    if (parking.restriction.journee.indexOf(self.days[currentDay]) === -1) {
+                                        avaliableSpots.push(parking);
+                                    } else if (parking.restriction.heureDebut) {
+                                        let startHours: string[];
+                                        let endHours: string[];
+                                        let avaliable = false;
+                                        for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
+                                            startHours = parking.restriction.heureDebut[i].split("h");
+                                            endHours = parking.restriction.heureFin[i].split("h");
+                                            if (startHours[1] !== "") {
+                                                if (endHours[1] !== "") {
+                                                    // tslint:disable-next-line:max-line-length
+                                                    if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
+                                                        avaliable = true;
+                                                    } else {
+                                                        // tslint:disable-next-line:max-line-length
+                                                        if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
+                                                            avaliable = true;
+                                                        } else {
+                                                            avaliable = false;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (avaliable) {
+                                            avaliableSpots.push(parking);
+                                        }
+                                    }
+                                }
                             } else if (parking.restriction.journee) {
                                 if (parking.restriction.journee.indexOf(self.days[currentDay]) === -1) {
                                     avaliableSpots.push(parking);
+                                } else if (parking.restriction.heureDebut) {
+                                    let startHours: string[];
+                                    let endHours: string[];
+                                    let avaliable = false;
+                                    for (let i = 0; i < parking.restriction.heureDebut.length; ++i) {
+                                        startHours = parking.restriction.heureDebut[i].split("h");
+                                        endHours = parking.restriction.heureFin[i].split("h");
+                                        if (startHours[1] !== "") {
+                                            if (endHours[1] !== "") {
+                                                // tslint:disable-next-line:max-line-length
+                                                if ((Number(startHours[0]) > currentHours && Number(startHours[1]) > currentMinutes)) {
+                                                    avaliable = true;
+                                                } else {
+                                                    // tslint:disable-next-line:max-line-length
+                                                    if ((Number(endHours[0]) < currentHours && Number(endHours[1]) < currentMinutes)) {
+                                                        avaliable = true;
+                                                    } else {
+                                                        avaliable = false;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (avaliable) {
+                                        avaliableSpots.push(parking);
+                                    }
                                 }
                             } else if (parking.restriction.heureDebut) {
                                 let startHours: string[];
