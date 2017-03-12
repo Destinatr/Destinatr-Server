@@ -29,7 +29,7 @@ export class Application {
         this.config();
 
         this.routes();
-
+        this.parse();
     }
 
     private config() {
@@ -69,6 +69,6 @@ export class Application {
 
     public parse() {
         let mtl = new StationnementMtl();
-        mtl.parseParking();
+        mtl.parseNonFreeParking();
     }
 }

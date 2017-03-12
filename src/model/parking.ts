@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import { RepositoryBase } from "./database";
 import { RestrictionModel } from "./restriction";
+import { PermissionModel } from './permissions';
 export let Schema = mongoose.Schema;
 export let ObjectId = mongoose.Schema.Types.ObjectId;
 export let Mixed = mongoose.Schema.Types.Mixed;
@@ -13,7 +14,9 @@ export interface Position {
 export interface ParkingModel extends mongoose.Document {
     position: Position;
     restriction?: RestrictionModel;
-    rating: number;
+    permissions?: PermissionModel[];
+    free?: boolean;
+    hourPrize?: number;
 }
 
 let schema = new Schema({
@@ -31,9 +34,23 @@ let schema = new Schema({
         required: false,
         ref: 'restriction'
     },
-    rating: {
+    permissions: {
+        type: [Schema.Types.ObjectId],
+        required: false,
+        ref: 'permissions'
+    },
+    free: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    hourPrize: {
         type: Number,
-        default: 0
+        required: false
+    },
+    maxTime: {
+        type: Number,
+        required: false
     }
 });
 
@@ -52,7 +69,7 @@ export class ParkingRepository extends RepositoryBase<ParkingModel> {
                 } else {
                     resolve(res);
                 }
-            }).sort(sort).populate('restriction');
+            }).sort(sort).populate('restriction').populate('permission');
         });
     }
 
@@ -64,7 +81,7 @@ export class ParkingRepository extends RepositoryBase<ParkingModel> {
                 } else {
                     resolve(res);
                 }
-            }).populate('restriction');
+            }).populate('restriction').populate('permission');
         });
     }
 }

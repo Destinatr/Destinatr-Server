@@ -1,8 +1,46 @@
 import * as fs from 'fs';
 import * as XLS from 'xlsx';
+import * as csv from 'fast-csv';
 import * as mtl from '../model/stationnement_mtl';
 import { ParkingModel, ParkingRepository } from '../model/parking';
 import { RestrictionModel, RestrictionRepository } from '../model/restriction';
+import { PermissionModel, PermissionRepository } from '../model/permissions';
+
+interface Periodes {
+    dtHeureDebut: string;
+    dtHeureFin: string;
+    bLun: boolean;
+    bMar: boolean;
+    bMer: boolean;
+    bJeu: boolean;
+    bVen: boolean;
+    bSam: boolean;
+    bDim: boolean;
+}
+
+interface Reglementations {
+    Type: string;
+    DateDebut: number;
+    DateFin: number;
+    maxHeures: number;
+}
+
+interface Places {
+    nLongitude: number;
+    nLatitude: number;
+    nPositionCentreLongitude: number;
+    nPositionCentreLatitude: number;
+    sStatut: string;
+    sGenre: string;
+    sType: string;
+    sAutreTete: string;
+    sNomRue: string;
+    nSupVelo: boolean;
+    sTypeExploitation: string;
+    nTarifHoraire: number;
+    sLocalisation: string;
+    nTarifMax: number;
+}
 
 module Controller {
 
@@ -10,10 +48,12 @@ module Controller {
 
         private repo: RestrictionRepository;
         private repoParking: ParkingRepository;
+        private repoPermission: PermissionRepository;
 
         constructor() {
             this.repo = new RestrictionRepository();
             this.repoParking = new ParkingRepository();
+            this.repoPermission = new PermissionRepository();
         }
 
         public async parseParking() {
@@ -42,6 +82,7 @@ module Controller {
                             }
                             datas.push(set);
                             let parking: ParkingModel = <ParkingModel>{};
+                            parking.free = true;
                             parking.restriction = restriction._id;
                             parking.position = set.geometry;
                             await this.repoParking.create(parking);
@@ -164,6 +205,266 @@ module Controller {
                 }
             }
             return months;
+        }
+
+        public parseNonFreeParking() {
+            return new Promise<boolean>(async (resolve, reject) => {
+                let periodes = await this.getPeriodes();
+                let reglementationPeriodes = await this.getReglementationsPeriodes();
+                let reglementations = await this.getReglementations();
+                let i = 0;
+                let j = 0;
+                for (let rp in reglementationPeriodes) {
+                    if (!rp) {
+                        continue;
+                    }
+                    ++j;
+                    let rule = reglementations[rp];
+                    let rps = reglementationPeriodes[rp];
+                    if (!rule) {
+                        continue;
+                    }
+                    if (rule.Type === 'U' || rule.Type === 'P' || rule.Type === 'Q'
+                        || rule.Type === 'V' || rule.Type === 'M') {
+                        ++i;
+                        let permission: PermissionModel = <PermissionModel>{};
+                        permission.code = rp;
+                        permission.days = [];
+
+                        for (let r of rps) {
+                            let per: Periodes = periodes[r];
+                            let dh = per.dtHeureDebut.replace(":", "h").slice(0, 5);
+                            let fh = per.dtHeureFin.replace(":", "h").slice(0, 5);
+
+                            if (per.bLun) {
+                                permission.days.push({
+                                    day: 'lundi',
+                                    heureDebut: [dh],
+                                    heureFin: [fh]
+                                });
+                            }
+                            if (per.bMar) {
+                                permission.days.push({
+                                    day: 'mardi',
+                                    heureDebut: [dh],
+                                    heureFin: [fh]
+                                });
+                            }
+                            if (per.bMer) {
+                                permission.days.push({
+                                    day: 'mercredi',
+                                    heureDebut: [dh],
+                                    heureFin: [fh]
+                                });
+                            }
+                            if (per.bJeu) {
+                                permission.days.push({
+                                    day: 'jeudi',
+                                    heureDebut: [dh],
+                                    heureFin: [fh]
+                                });
+                            }
+                            if (per.bVen) {
+                                permission.days.push({
+                                    day: 'vendredi',
+                                    heureDebut: [dh],
+                                    heureFin: [fh]
+                                });
+                            }
+                            if (per.bSam) {
+                                permission.days.push({
+                                    day: 'samedi',
+                                    heureDebut: [dh],
+                                    heureFin: [fh]
+                                });
+                            }
+                            if (per.bDim) {
+                                permission.days.push({
+                                    day: 'dimanche',
+                                    heureDebut: [dh],
+                                    heureFin: [fh]
+                                });
+                            }
+                        }
+                        await this.repoPermission.create(permission);
+                        let ok = true;
+                    }
+                }
+
+                let emplacementsReglementations = await this.getEmplacementReglementation();
+                let places = await this.getPlaces();
+
+                for (let place in places) {
+                    if (!place) {
+                        continue;
+                    }
+                    let rules = emplacementsReglementations[place];
+                    let parking: ParkingModel = <ParkingModel>{};
+                    parking.permissions = [];
+                    for (let rule of rules) {
+                        let permission = await this.repoPermission.findOne({
+                            code: rule
+                        });
+                        if (!permission) {
+                            continue;
+                        }
+                        parking.permissions.push(permission._id);
+                    }
+                    if (parking.permissions.length > 0) {
+                        parking.free = false;
+                        parking.hourPrize = places[place].nTarifHoraire;
+                        parking.position = {
+                            type: "Point",
+                            coordinates: [
+                                places[place].nLongitude,
+                                places[place].nLatitude
+                            ]
+                        };
+                        await this.repoParking.create(parking);
+                    }
+                }
+
+                let ok = true;
+                resolve(true);
+                console.log("Eh ben : " + j + ":" + i);
+            });
+        }
+
+        public getPeriodes() {
+            return new Promise<Periodes[]>(async (resolve, reject) => {
+                let i = 0;
+                let periodes: Periodes[] = [];
+                csv.fromPath(__dirname +
+                    "/../../sets/Periodes.csv")
+                    .on("data", function (data) {
+                        if (i) {
+                            periodes[data[mtl.Periodes.nId]] = {
+                                dtHeureDebut: data[mtl.Periodes.dtHeureDebut],
+                                dtHeureFin: data[mtl.Periodes.dtHeureFin],
+                                bLun: Boolean(Number(data[mtl.Periodes.bLun])),
+                                bMar: Boolean(Number(data[mtl.Periodes.bMar])),
+                                bMer: Boolean(Number(data[mtl.Periodes.bMer])),
+                                bJeu: Boolean(Number(data[mtl.Periodes.bJeu])),
+                                bVen: Boolean(Number(data[mtl.Periodes.bVen])),
+                                bSam: Boolean(Number(data[mtl.Periodes.bSam])),
+                                bDim: Boolean(Number(data[mtl.Periodes.bDim])),
+                            };
+                        }
+                        ++i;
+                    })
+                    .on("end", function () {
+                        resolve(periodes);
+                        console.log("Eh ben : " + periodes.length);
+                    });
+            });
+        }
+
+        public getReglementationsPeriodes() {
+            return new Promise<string[][]>(async (resolve, reject) => {
+                let i = 0;
+                let reglementations: string[][] = [];
+                csv.fromPath(__dirname +
+                    "/../../sets/ReglementationPeriode.csv")
+                    .on("data", function (data) {
+                        if (i) {
+                            if (reglementations[data[mtl.ReglementationPeriodes.sCode]]) {
+                                reglementations[data[mtl.ReglementationPeriodes.sCode]]
+                                    .push(data[mtl.ReglementationPeriodes.noPeriode]);
+                            } else {
+                                reglementations[data[mtl.ReglementationPeriodes.sCode]] =
+                                    [data[mtl.ReglementationPeriodes.noPeriode]];
+                            }
+                        }
+                        ++i;
+                    })
+                    .on("end", function () {
+                        resolve(reglementations);
+                        console.log("Eh ben : " + reglementations.length);
+                    });
+            });
+        }
+
+        public getReglementations() {
+            return new Promise<Reglementations[]>(async (resolve, reject) => {
+                let i = 0;
+                let reglementations: Reglementations[] = [];
+                csv.fromPath(__dirname +
+                    "/../../sets/Reglementations.csv")
+                    .on("data", function (data) {
+                        if (i) {
+                            reglementations[data[mtl.Reglementations.Name]] = {
+                                Type: data[mtl.Reglementations.Type],
+                                DateDebut: data[mtl.Reglementations.DateDebut],
+                                DateFin: data[mtl.Reglementations.DateFin],
+                                maxHeures: data[mtl.Reglementations.maxHeures]
+                            };
+                        }
+                        ++i;
+                    })
+                    .on("end", function () {
+                        resolve(reglementations);
+                        console.log("Eh ben : " + reglementations.length);
+                    });
+            });
+        }
+
+        public getEmplacementReglementation() {
+            return new Promise<string[][]>(async (resolve, reject) => {
+                let i = 0;
+                let emplacements: string[][] = [];
+                csv.fromPath(__dirname +
+                    "/../../sets/EmplacementReglementation.csv")
+                    .on("data", function (data) {
+                        if (i) {
+                            if (emplacements[data[mtl.EmplacementReglementation.sNoEmplacement]]) {
+                                emplacements[data[mtl.EmplacementReglementation.sNoEmplacement]]
+                                    .push(data[mtl.EmplacementReglementation.sCodeAutocollant]);
+                            } else {
+                                emplacements[data[mtl.EmplacementReglementation.sNoEmplacement]] =
+                                    [data[mtl.EmplacementReglementation.sCodeAutocollant]];
+                            }
+                        }
+                        ++i;
+                    })
+                    .on("end", function () {
+                        resolve(emplacements);
+                        console.log("Eh ben : " + emplacements.length);
+                    });
+            });
+        }
+
+        public getPlaces() {
+            return new Promise<Places[]>(async (resolve, reject) => {
+                let i = 0;
+                let places: Places[] = [];
+                csv.fromPath(__dirname +
+                    "/../../sets/Places.csv")
+                    .on("data", function (data) {
+                        if (i) {
+                            places[data[mtl.Places.sNoPlace]] = {
+                                nLongitude: data[mtl.Places.nLongitude],
+                                nLatitude: data[mtl.Places.nLatitude],
+                                nPositionCentreLongitude: data[mtl.Places.nPositionCentreLongitude],
+                                nPositionCentreLatitude: data[mtl.Places.nPositionCentreLatitude],
+                                sStatut: data[mtl.Places.sStatut],
+                                sGenre: data[mtl.Places.sGenre],
+                                sType: data[mtl.Places.sType],
+                                sAutreTete: data[mtl.Places.sAutreTete],
+                                sNomRue: data[mtl.Places.sNomRue],
+                                nSupVelo: data[mtl.Places.nSupVelo],
+                                sTypeExploitation: data[mtl.Places.sTypeExploitation],
+                                nTarifHoraire: data[mtl.Places.nTarifHoraire],
+                                sLocalisation: data[mtl.Places.sLocalisation],
+                                nTarifMax: data[mtl.Places.nTarifMax],
+                            };
+                        }
+                        ++i;
+                    })
+                    .on("end", function () {
+                        resolve(places);
+                        console.log("Eh ben : " + places.length);
+                    });
+            });
         }
     }
 }

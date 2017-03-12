@@ -11,41 +11,36 @@ export interface RestrictionModel extends mongoose.Document {
     code: string;
     toujours?: boolean;
     journee?: string[];
-    moisDebut?: string[];
-    moisFin?: string[];
+    mois?: string[];
     heureDebut?: string[];
     heureFin?: string[];
 }
 
 let schema = new Schema({
-            code: {
-                type: String,
-                required: true
-            },
-            toujours: {
-                type: Boolean,
-                required: false
-            },
-            journee: {
-                type: [String],
-                required: false
-            },
-            moisDebut: {
-                type: [String],
-                required: false
-            },
-            moisFin: {
-                type: [String],
-                required: false
-            },
-            heureDebut: {
-                type: [String],
-                required: false
-            },
-            heureFin: {
-                type: [String],
-                required: false
-            }
+    code: {
+        type: String,
+        required: true
+    },
+    toujours: {
+        type: Boolean,
+        required: false
+    },
+    journee: {
+        type: [String],
+        required: false
+    },
+    mois: {
+        type: [String],
+        required: false
+    },
+    heureDebut: {
+        type: [String],
+        required: false
+    },
+    heureFin: {
+        type: [String],
+        required: false
+    }
 });
 
 export let restrictionSchema = mongoose.model<RestrictionModel>("restriction", schema, "restrictions", true);
