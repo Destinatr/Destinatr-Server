@@ -23,7 +23,7 @@ module Route {
                 res.json({ success: false, msg: "Please enter all required information." });
             } else {
                 try {
-                    let date = new Date(req.body["timestamp"]);
+                    let date = new Date(Number(req.body["timestamp"]));
                     let rating = await RatingController.getInstance().create(<RatingModel>{
                         position: {
                             type: 'Point',
