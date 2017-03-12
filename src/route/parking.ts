@@ -154,7 +154,7 @@ module Route {
                             }
                         }
                         let remaningPages = Math.ceil(count / ( Number(pageSize) * (Number(pageNumber) + 1)) );
-                        remaningPages--;
+                        remaningPages = (remaningPages) ? remaningPages - 1 : 0;
                         res.json({ success: true, parkings: avaliableSpots, remaningPages: remaningPages });
                     });
                 }).catch((err) => {
