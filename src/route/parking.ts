@@ -19,6 +19,7 @@ module Route {
             // tslint:disable-next-line:max-line-length
             this.router.get("/near/:longitude/:latitude/:distanceRadius/:pageNumber/:pageSize", this.getNearestParkings.bind(this));
             this.router.get("/nearest/:longitude/:latitude/:distanceRadius", this.getNearestParking.bind(this));
+            this.router.get("/prediction/:longitude/:latitude/:distanceRadius", this.getNearestParking.bind(this));
         }
 
         private getNearestParking(req: express.Request, res: express.Response) {
