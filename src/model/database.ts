@@ -30,6 +30,7 @@ export interface IRead<T> {
     findById: (id: string) => Promise<T>;
     findOne(cond?: Object): Promise<T>;
     find(cond: Object, options: Object): Promise<T[]>;
+    count(cond: Object, options: Object): Promise<number>;
 }
 
 export interface IWrite<T> {
@@ -115,6 +116,18 @@ export class RepositoryBase<T extends mongoose.Document> implements IRead<T>, IW
         return new Promise<T>((resolve, reject) => {
             this._model.findOne(cond, (err: any, res: T) => {
 
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res);
+                }
+            });
+        });
+    }
+
+    count (cond?: Object): Promise<number> {
+        return new Promise<number>((resolve, reject) => {
+            this._model.count(cond, (err: any, res: number) => {
                 if (err) {
                     reject(err);
                 } else {

@@ -11,6 +11,12 @@ export interface Position {
     coordinates: number[];
 }
 
+export interface Rating {
+    rating: number;
+    day: number;
+    hour: number;
+}
+
 export interface ParkingModel extends mongoose.Document {
     position: Position;
     restriction?: RestrictionModel;
@@ -61,7 +67,20 @@ export class ParkingRepository extends RepositoryBase<ParkingModel> {
         super(parkingSchema);
     }
 
-    public findAndPopulate(cond?: Object, options?: Object, sort?: Object): Promise<ParkingModel[]> {
+    public findOneAndPopulate(cond?: Object): Promise<ParkingModel> {
+        return new Promise<ParkingModel>((resolve, reject) => {
+            this._model.findOne(cond, (err: any, res: ParkingModel) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res);
+                }
+            }).populate('restriction');
+        });
+    }
+
+    // tslint:disable-next-line:max-line-length
+    public findAndPopulate(cond?: Object, options?: Object, skip?: number, limit?: number): Promise<ParkingModel[]> {
         return new Promise<ParkingModel[]>((resolve, reject) => {
             this._model.find(cond, options, (err: any, res: ParkingModel[]) => {
                 if (err) {
@@ -69,7 +88,7 @@ export class ParkingRepository extends RepositoryBase<ParkingModel> {
                 } else {
                     resolve(res);
                 }
-            }).sort(sort).populate('restriction').populate('permission');
+            }).skip(skip).limit(limit).populate('restriction').populate('permission');
         });
     }
 
