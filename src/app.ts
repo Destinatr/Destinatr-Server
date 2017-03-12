@@ -6,7 +6,12 @@ import * as logger from 'morgan';
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
+import * as database from "./model/database";
+
 import { Index } from './route/index';
+import { ParkingRoute } from './route/parking';
+
+import { StationnementMtl } from './controller/stationnement_mtl';
 
 export class Application {
 
@@ -17,11 +22,14 @@ export class Application {
     }
 
     constructor() {
+        database.initialize("ds021172.mlab.com:21172/destinatr", process.env.USERNAME_DB, process.env.PASSWORD_DB);
+
         this.app = express();
 
         this.config();
 
         this.routes();
+
     }
 
     private config() {
@@ -33,7 +41,6 @@ export class Application {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(cookieParser());
-        this.app.use(express.static(path.join(__dirname, '../../client')));
         this.app.use(express.static(path.join(__dirname, '../public')));
         this.app.use(cors());
     }
@@ -41,7 +48,10 @@ export class Application {
     public routes() {
 
         let index: Index = new Index();
+        let parking: ParkingRoute = new ParkingRoute();
+
         this.app.use("/", index.router);
+        this.app.use("/parking", parking.router);
 
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
             let err = new Error('Not Found');
@@ -55,5 +65,10 @@ export class Application {
                 error: {}
             });
         });
+    }
+
+    public parse() {
+        let mtl = new StationnementMtl();
+        mtl.parseParking();
     }
 }
